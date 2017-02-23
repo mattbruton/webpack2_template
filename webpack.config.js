@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -10,15 +11,15 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                // JavaScript or JSX
-                test: /\.(jsx?)$/,
-                exclude: /node_modules/,
+          {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
-                options: {
-                    presets: ['es2015']
+                query: {
+                  presets: ['es2015']
                 }
-            }, {
+              },
+             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
@@ -38,6 +39,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({title: 'New App', hash: true, template: './src/index.ejs'}),
         new ExtractTextPlugin({filename: 'bundle.css', disable: false, allChunks: true})
     ]
